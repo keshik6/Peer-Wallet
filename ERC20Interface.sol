@@ -6,7 +6,6 @@
 pragma solidity ^0.4.24;
 
 contract ERC20Interface{
-
   // Total amount of tokens
   uint256 public totalSupply;
 
