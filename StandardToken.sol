@@ -26,19 +26,19 @@ contract StandardToken{
   }
 
   // Getter functions for contract data fields
-  function getName() public view returns (string){
+  function name() public view returns (string){
     return _name;
   }
 
-  function getSymbol() public view returns (string){
+  function symbol() public view returns (string){
     return _symbol;
   }
 
-  function getDecimels() public view returns (uint8){
+  function decimels() public view returns (uint8){
     return _decimels;
   }
 
-  function getTotalSupply() public view returns (uint256){
+  function totalSupply() public view returns (uint256){
     return _totalSupply;
   }
 
