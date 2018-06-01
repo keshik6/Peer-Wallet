@@ -5,12 +5,12 @@
 
 pragma solidity ^0.4.24;
 
-import "ERC20Interface.sol";
+import "browser/ERC20Interface.sol";
 
-contract P2P is ERC20TokenInterface{
+contract P2P is ERC20Interface{
 
   // MaxLimit of uint256
-  uint private view MAX_LIMIT = 2**256-1;
+  uint256 private MAX_LIMIT = 2**256-1;
 
   // Mapping to store addresses and balances
   mapping (address => uint256) public balances;
@@ -19,17 +19,17 @@ contract P2P is ERC20TokenInterface{
   mapping (address => mapping (address => uint256)) public allowed;
 
   // Token identities
-  string public view name = "Peer-to-Peer Coin";
-  string public view symbol = "P2P";
-  uint8 public view decimels = 18;
+  string public constant name = "Peer-to-Peer Coin";
+  string public constant symbol = "P2P";
+  uint8 public constant decimels = 18;
 
   // Token constructor
-  function P2P(uint256 _totalSupply) public {
-    totalSupply = _totalSupplyt;
-    balances[msg.sender] = totalSupply;
+  constructor (uint256 _totalSupply) internal {
+    totalSupply = _totalSupply;
+    balances[msg.sender] = _totalSupply;
   }
 
-  function balanceOf(address _owner) public returns (uint256 balance){
+  function balanceOf(address _owner) public view returns (uint256 balance){
     return balances[_owner];
   }
 
@@ -56,7 +56,7 @@ contract P2P is ERC20TokenInterface{
     return true;
   }
 
-  function allowance(address _owner, address _spender) public returns (uint256 remaining){
+  function allowance(address _owner, address _spender) public view returns (uint256 remaining){
     return allowed[_owner][_spender];
   }
 
