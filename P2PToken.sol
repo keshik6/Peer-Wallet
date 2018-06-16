@@ -1,6 +1,7 @@
 pragma solidity ^0.4.24;
 
 import "StandardToken.sol";
+import "github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol";
 
 contract P2PToken is StandardToken("P2P Token", "P2P", 18, 10**27), ERC20, ERC223{
 
@@ -17,9 +18,9 @@ contract P2PToken is StandardToken("P2P Token", "P2P", 18, 10**27), ERC20, ERC22
 
   function transfer(address _to, uint256 _value) public returns (bool success){
     if (_balanceOf[msg.sender] >= _value && _value>0 && !isContract(_to) && _allowance[msg.sender][_to] >= _value){
-        _balanceOf[msg.sender] -= _value;
-        _balanceOf[_to] += _value;
-        _allowance[msg.sender][_to] -= _value;
+        _balanceOf[msg.sender].sub(_value);
+        _balanceOf[_to].add(_value);
+        _allowance[msg.sender][_to].sub(_value);
         emit Transfer(msg.sender, _to, _value);
         return true;
     }
@@ -29,9 +30,9 @@ contract P2PToken is StandardToken("P2P Token", "P2P", 18, 10**27), ERC20, ERC22
   function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
     uint allowedLimit = _allowance[_from][_to];
     if (_balanceOf[_from] >= _value && allowedLimit >= _value && allowedLimit < MAX_LIMIT){
-        _balanceOf[_from] -= _value;
-        _balanceOf[_to] += _value;
-        _allowance[msg.sender][_to] -= _value;
+        _balanceOf[_from].sub(_value);
+        _balanceOf[_to].add(_value);
+        _allowance[msg.sender][_to].sub(_value);
          emit Transfer(_from, _to, _value);
         return true;
     }
@@ -58,9 +59,9 @@ contract P2PToken is StandardToken("P2P Token", "P2P", 18, 10**27), ERC20, ERC22
 
   function transfer(address _to, uint256 _value, bytes _data) external returns (bool){
       if (_value > 0 && _balanceOf[msg.sender] >= _value && isContract(_to)){
-        _balanceOf[msg.sender] -= _value;
-        _balanceOf[_to] += _value;
-        _allowance[msg.sender][_to] -= _value;
+        _balanceOf[msg.sender].sub(_value);
+        _balanceOf[_to].add(_value);
+        _allowance[msg.sender][_to].sub(_value);
         ERC223ReceivingContract _contract = ERC223ReceivingContract(_to);
         _contract.tokenFallback(msg.sender, _value, _data);
         emit Transfer(msg.sender, _to, _value);
